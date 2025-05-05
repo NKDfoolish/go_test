@@ -11,10 +11,26 @@ import java.util.Map;
 public interface ScoreRepository extends JpaRepository<Score, Long> {
 
     @Query(value = "SELECT " +
-            "SUM(CASE WHEN score >= 8 THEN 1 ELSE 0 END) as excellent, " +
-            "SUM(CASE WHEN score >= 6 AND score < 8 THEN 1 ELSE 0 END) as good, " +
-            "SUM(CASE WHEN score >= 4 AND score < 6 THEN 1 ELSE 0 END) as average, " +
-            "SUM(CASE WHEN score < 4 THEN 1 ELSE 0 END) as belowAverage " +
-            "FROM scores WHERE subject = :subject", nativeQuery = true)
-    Map<String, Long> getScoreStatistics(@Param("subject") String subject);
+            "sc.subject as subject, " +
+            "SUM(CASE WHEN sc.score >= 8 THEN 1 ELSE 0 END) as highScore, " +
+            "SUM(CASE WHEN sc.score >= 6 AND sc.score < 8 THEN 1 ELSE 0 END) as goodScore, " +
+            "SUM(CASE WHEN sc.score >= 4 AND sc.score < 6 THEN 1 ELSE 0 END) as averageScore, " +
+            "SUM(CASE WHEN sc.score < 4 THEN 1 ELSE 0 END) as lowScore " +
+            "FROM scores sc " +
+            "JOIN students s ON sc.student_id = s.student_id " +
+            "GROUP BY sc.subject " +
+            "ORDER BY sc.subject", nativeQuery = true)
+    List<Map<String, Object>> getAllSubjectsScoreStatistics();
+
+    @Query(value = "SELECT " +
+            "sc.subject as subject, " +
+            "SUM(CASE WHEN sc.score >= 8 THEN 1 ELSE 0 END) as highScore, " +
+            "SUM(CASE WHEN sc.score >= 6 AND sc.score < 8 THEN 1 ELSE 0 END) as goodScore, " +
+            "SUM(CASE WHEN sc.score >= 4 AND sc.score < 6 THEN 1 ELSE 0 END) as averageScore, " +
+            "SUM(CASE WHEN sc.score < 4 THEN 1 ELSE 0 END) as lowScore " +
+            "FROM scores sc " +
+            "JOIN students s ON sc.student_id = s.student_id " +
+            "WHERE sc.subject = :subject " +
+            "GROUP BY sc.subject", nativeQuery = true)
+    Map<String, Object> getScoreStatisticsBySubject(@Param("subject") String subject);
 }

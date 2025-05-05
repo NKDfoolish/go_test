@@ -1,6 +1,5 @@
 package com.go_test.scores.controller;
 
-import com.go_test.scores.entity.Score;
 import com.go_test.scores.entity.Student;
 import com.go_test.scores.service.ScoreService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +21,13 @@ public class ScoreController {
     }
 
     @GetMapping("/statistics/{subject}")
-    public ResponseEntity<Map<String, Long>> getScoreStatistics(@PathVariable String subject) {
+    public ResponseEntity<Map<String, Object>> getScoreStatisticsBySubject(@PathVariable String subject) {
         return ResponseEntity.ok(scoreService.getScoreStatisticsBySubject(subject));
+    }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<List<Map<String, Object>>> getAllSubjectsScoreStatistics() {
+        return ResponseEntity.ok(scoreService.getAllSubjectsScoreStatistics());
     }
 
     @GetMapping("/top10-group-a")
