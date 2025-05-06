@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/exam_db
+    url: jdbc:postgresql://database-1.crce6uccop1k.ap-northeast-1.rds.amazonaws.com/postgres
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
@@ -13,3 +13,7 @@ spring:
     locations: classpath:db/migration
 server:
   port: 8080
+
+#    url: jdbc:postgresql://localhost:5432/exam_db
+#    username: postgres
+#    password: postgres
